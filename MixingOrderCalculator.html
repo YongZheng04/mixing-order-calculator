@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mixing Order Calculator</title>
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <script src="data.js"></script>
+</head>
+<body>
+
+<h2>Mixing Order Calculator</h2>
+
+<!-- Part 1: General Inputs -->
+<div class="form-row">
+  <label for="itemName">Item Name</label>
+  <select id="itemName" style="width: 100%">
+    <option value="" disabled selected>--Select an item--</option>
+  </select>
+</div>
+
+<div class="form-row">
+  <label for="tonnage">Tonnage (RM)</label>
+  <input type="number" id="tonnage" step="0.01" min="0" placeholder="-- Enter your value --"/>
+</div>
+
+<div class="form-row">
+  <label for="delivery">Delivery</label>
+  <select id="delivery">
+    <option value="" disabled selected>--Select an option--</option>
+    <option value="Ex">Ex</option>
+    <option value="Deld">Deld</option>
+  </select>
+</div>
+
+<div class="form-row">
+  <label for="mixingLocation">Mixing Location</label>
+  <select id="mixingLocation">
+    <option value="" disabled selected>--Select an option--</option>
+    <option value="ASAHI">ASAHI</option>
+    <option value="HSK">HSK</option>
+    <option value="JENJAROM">JENJAROM</option>
+    <option value="NSBK">NSBK</option>
+    <option value="ORIENTAL">ORIENTAL</option>
+    <option value="WIV">WIV</option>
+  </select>
+</div>
+
+<!-- Part 2: Nutrient Table -->
+<div class="form-section">
+  <h3>Nutrient Table</h3>
+  <table id="nutrientTable">
+    <thead>
+      <tr>
+        <th></th>
+        <th>N</th>
+        <th>P2O5</th>
+        <th>K2O</th>
+        <th>MgO</th>
+        <th>TOTAL</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr id="expectedRow">
+        <td>Expected</td>
+        <td data-label="N"><span class="nutrient-label"></span> <span id="expectedN" class="nutrient-value"></span></td>
+        <td data-label="P2O5"><span class="nutrient-label"></span> <span id="expectedP2O5" class="nutrient-value"></span></td>
+        <td data-label="K2O"><span class="nutrient-label"></span> <span id="expectedK2O" class="nutrient-value"></span></td>
+        <td data-label="MgO"><span class="nutrient-label"></span> <span id="expectedMgO" class="nutrient-value"></span></td>
+        <td data-label="TOTAL"><span class="nutrient-label"></span> <span id="expectedTotal" class="nutrient-value"></span></td>
+      </tr>
+      <tr id="calculatedRow">
+        <td>Calculated</td>
+        <td data-label="N"><span class="nutrient-label"></span> <span id="calculatedN" class="nutrient-value"></span></td>
+        <td data-label="P2O5"><span class="nutrient-label"></span> <span id="calculatedP2O5" class="nutrient-value"></span></td>
+        <td data-label="K2O"><span class="nutrient-label"></span> <span id="calculatedK2O" class="nutrient-value"></span></td>
+        <td data-label="MgO"><span class="nutrient-label"></span> <span id="calculatedMgO" class="nutrient-value"></span></td>
+        <td data-label="TOTAL"><span class="nutrient-label"></span> <span id="calculatedTotal" class="nutrient-value"></span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Part 3: Materials Table -->
+<div class="form-section">
+  <h3>Materials Table</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Material</th>
+        <th>Input Ratio (kg)</th>
+        <th>Unit Price (RM)</th>
+        <th>Total Cost (RM)</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="materialTableBody"></tbody>
+  </table>
+
+  <p><strong>Total Input Ratio:</strong> <span id="totalRatio">0</span> kg</p>
+
+  <div class="button-group">
+    <button type="button" onclick="addMaterialRow()">Add</button>
+  </div>
+</div>
+
+<!-- Part 4: Calculations -->
+<div class="form-section">
+  <h3>Price Table</h3>
+  <div class="form-row">
+    <label for="sellingPrice">Selling Price (RM)</label>
+    <input type="number" id="sellingPrice" step="0.01" min="0" placeholder="-- Enter your value --"/>
+  </div>
+
+  <div class="form-row">
+    <label for="materialCost">Material Cost (RM)</label>
+    <input type="text" id="materialCost" readonly/>
+  </div>
+
+  <div class="form-row">
+    <label for="mixingCost">Mixing (RM)</label>
+    <input type="text" id="mixingCost" readonly/>
+  </div>
+
+  <div class="form-row">
+    <label>Transport In (RM)</label>
+    <input type="text" id="transportIn" value="30.00" readonly/>
+  </div>
+
+  <div class="form-row">
+    <label for="bagCost">Bag (RM)</label>
+    <input type="text" id="bagCost" readonly/>
+  </div>
+
+  <div class="form-row">
+    <label for="transportOut">Transport Out (RM)</label>
+    <input type="text" id="transportOut" readonly/>
+  </div>
+
+  <div class="form-row">
+    <label for="commission">Commission (RM)</label>
+    <input type="number" id="commission" step="0.01" min="0" placeholder="-- Enter your value --"/>
+  </div>
+
+  <div class="form-row">
+    <label for="totalCost">Total Cost (RM)</label>
+    <input type="text" id="totalCost" readonly/>
+  </div>
+
+  <div class="form-row">
+    <label for="grossProfit">Gross Profit (RM)</label>
+    <input type="text" id="grossProfit" readonly/>
+  </div>
+
+  <div class="form-row">
+    <label for="gpMargin">GP Margin (%)</label>
+    <input type="text" id="gpMargin" readonly/>
+  </div>
+</div>
+
+<script>
+const itemName = document.getElementById("itemName");
+const bagCostField = document.getElementById("bagCost");
+const materialCostField = document.getElementById("materialCost");
+const mixingCostField = document.getElementById("mixingCost");
+const transportOutField = document.getElementById("transportOut");
+const totalCostField = document.getElementById("totalCost");
+const grossProfitField = document.getElementById("grossProfit");
+const gpMarginField = document.getElementById("gpMargin");
+const sellingPriceInput = document.getElementById("sellingPrice");
+const tonnageInput = document.getElementById("tonnage");
+const commissionInput = document.getElementById("commission");
+const transportInField = document.getElementById("transportIn");
+const materialTableBody = document.getElementById("materialTableBody");
+const mixingLocation = document.getElementById("mixingLocation");
+
+// Parse nutrient values from item name or use manual values from data.js
+function parseNutrientValues(itemName) {
+  if (items[itemName]?.nutrients) {
+    const { N, P2O5, K2O, MgO } = items[itemName].nutrients;
+    const total = (N || 0) + (P2O5 || 0) + (K2O || 0) + (MgO || 0);
+    return { N, P2O5, K2O, MgO, total };
+  }
+  const match = itemName.match(/(\d+)-(\d+)-(\d+)-(\d+)/);
+  if (match) {
+    const [, N, P2O5, K2O, MgO] = match.map(Number);
+    const total = N + P2O5 + K2O + MgO;
+    return { N, P2O5, K2O, MgO, total };
+  }
+  return { N: 0, P2O5: 0, K2O: 0, MgO: 0, total: 0 };
+}
+
+// Recalculate nutrient values based on materials and mixing location
+function recalculateNutrients() {
+  const isAsahi = mixingLocation.value === "ASAHI";
+  const contributions = isAsahi ? nutrientContributionsAsahi : nutrientContributionsNonAsahi;
+  let calculated = { N: 0, P2O5: 0, K2O: 0, MgO: 0 };
+
+  [...materialTableBody.children].forEach(row => {
+    const material = row.querySelector(".material-select").value;
+    const ratio = parseFloat(row.querySelector(".input-ratio").value) || 0;
+    if (material && contributions[material]) {
+      const factor = ratio / 1000;
+      calculated.N += factor * (contributions[material].N || 0);
+      calculated.P2O5 += factor * (contributions[material].P2O5 || 0);
+      calculated.K2O += factor * (contributions[material].K2O || 0);
+      calculated.MgO += factor * (contributions[material].MgO || 0);
+    }
+  });
+
+  const total = calculated.N + calculated.P2O5 + calculated.K2O + calculated.MgO;
+  document.getElementById("calculatedN").innerText = calculated.N.toFixed(1);
+  document.getElementById("calculatedP2O5").innerText = calculated.P2O5.toFixed(1);
+  document.getElementById("calculatedK2O").innerText = calculated.K2O.toFixed(1);
+  document.getElementById("calculatedMgO").innerText = calculated.MgO.toFixed(1);
+  document.getElementById("calculatedTotal").innerText = total.toFixed(1);
+
+  // Highlight if different
+  const expectedN = parseFloat(document.getElementById("expectedN").innerText) || 0;
+  const expectedP2O5 = parseFloat(document.getElementById("expectedP2O5").innerText) || 0;
+  const expectedK2O = parseFloat(document.getElementById("expectedK2O").innerText) || 0;
+  const expectedMgO = parseFloat(document.getElementById("expectedMgO").innerText) || 0;
+  const calculatedRow = document.getElementById("calculatedRow");
+  if (
+    Math.abs(expectedN - calculated.N) > 0.1 ||
+    Math.abs(expectedP2O5 - calculated.P2O5) > 0.1 ||
+    Math.abs(expectedK2O - calculated.K2O) > 0.1 ||
+    Math.abs(expectedMgO - calculated.MgO) > 0.1
+  ) {
+    calculatedRow.classList.add("different");
+  } else {
+    calculatedRow.classList.remove("different");
+  }
+}
+
+// Populate itemName dropdown in alphabetical order
+function populateItemDropdown() {
+  const sortedItems = Object.keys(items).sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
+  const options = sortedItems.map(item => 
+    `<option value="${item}">${item}</option>`
+  ).join("");
+  itemName.innerHTML = `<option value="" disabled selected>--Select an item--</option>${options}`;
+}
+
+// Initialize Select2 for itemName and handle bag price, material updates, and nutrients
+$(document).ready(function () {
+  populateItemDropdown();
+  $('#itemName').select2({
+    placeholder: "-- Select an item --",
+    allowClear: true,
+    width: '100%'
+  });
+  $('#itemName').on('select2:select', function () {
+    const selectedValue = $(this).val();
+    bagCostField.value = items[selectedValue]?.bagPrice.toFixed(2) || "";
+    // Populate expected nutrient values
+    const expectedNutrients = parseNutrientValues(selectedValue);
+    document.getElementById("expectedN").innerText = expectedNutrients.N.toFixed(1);
+    document.getElementById("expectedP2O5").innerText = expectedNutrients.P2O5.toFixed(1);
+    document.getElementById("expectedK2O").innerText = expectedNutrients.K2O.toFixed(1);
+    document.getElementById("expectedMgO").innerText = expectedNutrients.MgO.toFixed(1);
+    document.getElementById("expectedTotal").innerText = expectedNutrients.total.toFixed(1);
+    // Clear existing rows
+    materialTableBody.innerHTML = "";
+    // Add rows for the selected item's materials
+    if (items[selectedValue]?.materials) {
+      items[selectedValue].materials.forEach(({ material, percentage }) => {
+        addMaterialRow(material, (percentage * 1000).toFixed(2));
+      });
+    }
+    recalculateCosts();
+    recalculateNutrients();
+  });
+  $('#itemName').on('select2:unselect', function () {
+    bagCostField.value = "";
+    materialTableBody.innerHTML = "";
+    document.getElementById("expectedN").innerText = "";
+    document.getElementById("expectedP2O5").innerText = "";
+    document.getElementById("expectedK2O").innerText = "";
+    document.getElementById("expectedMgO").innerText = "";
+    document.getElementById("expectedTotal").innerText = "";
+    document.getElementById("calculatedN").innerText = "";
+    document.getElementById("calculatedP2O5").innerText = "";
+    document.getElementById("calculatedK2O").innerText = "";
+    document.getElementById("calculatedMgO").innerText = "";
+    document.getElementById("calculatedTotal").innerText = "";
+    document.getElementById("calculatedRow").classList.remove("different");
+    recalculateCosts();
+  });
+});
+
+// Add material row with optional material and ratio parameters
+function addMaterialRow(material = "", ratio = "") {
+  const row = document.createElement("tr");
+  row.innerHTML = `
+    <td data-label="Material">
+      <select class="material-select" style="width: 100%">
+        <option value="">-- Select --</option>
+        ${Object.keys(materialPrices).map(m => `<option value="${m}">${m}</option>`).join("")}
+      </select>
+    </td>
+    <td data-label="Input Ratio (kg)"><input type="number" class="input-ratio" step="0.01" min="0" value="${ratio}" /></td>
+    <td data-label="Unit Price (RM)"><input type="number" class="unit-price" readonly /></td>
+    <td data-label="Total Cost (RM)"><input type="text" class="total-cost" readonly /></td>
+    <td data-label="Action"><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
+  `;
+  materialTableBody.appendChild(row);
+
+  const materialSelect = $(row).find(".material-select");
+  materialSelect.select2({
+    width: '100%',
+    dropdownAutoWidth: true
+  });
+  if (material) {
+    materialSelect.val(material).trigger('change.select2');
+    updateMaterialPrice(row, material);
+    recalculateCosts();
+    recalculateNutrients();
+  }
+  materialSelect.on('select2:select', function () {
+    const selectedMaterial = $(this).val();
+    updateMaterialPrice(row, selectedMaterial);
+    recalculateCosts();
+    recalculateNutrients();
+  });
+  // Add event listener for input ratio changes
+  row.querySelector(".input-ratio").addEventListener("input", () => {
+    recalculateCosts();
+    recalculateNutrients();
+  });
+}
+
+// Update material price based on mixing location
+function updateMaterialPrice(row, material) {
+  const isAsahi = mixingLocation.value === "ASAHI";
+  const price = isAsahi && asahiPrices[material] !== undefined ? asahiPrices[material] : materialPrices[material] !== undefined ? materialPrices[material] : 0;
+  row.querySelector(".unit-price").value = price.toFixed(2);
+}
+
+// Update all material prices in the table when mixing location changes
+function updateAllMaterialPrices() {
+  [...materialTableBody.children].forEach(row => {
+    const materialSelect = $(row).find(".material-select");
+    const selectedMaterial = materialSelect.val();
+    if (selectedMaterial) {
+      updateMaterialPrice(row, selectedMaterial);
+    }
+  });
+  recalculateCosts();
+}
+
+function removeRow(btn) {
+  btn.closest("tr").remove();
+  recalculateCosts();
+  recalculateNutrients();
+}
+
+function recalculateCosts() {
+  let totalMaterialCost = 0;
+  let totalRatio = 0;
+
+  [...materialTableBody.children].forEach(row => {
+    const ratio = parseFloat(row.querySelector(".input-ratio").value) || 0;
+    const price = parseFloat(row.querySelector(".unit-price").value) || 0;
+    const cost = (ratio * price) / 1000;
+    row.querySelector(".total-cost").value = cost.toFixed(2);
+    totalMaterialCost += cost;
+    totalRatio += ratio;
+  });
+
+  document.getElementById("totalRatio").innerText = totalRatio.toFixed(2);
+  document.getElementById("totalRatio").style.color = (totalRatio === 1000 ? "green" : "red");
+  materialCostField.value = totalMaterialCost.toFixed(2);
+  updateTotals();
+}
+
+function updateTotals() {
+  const material = parseFloat(materialCostField.value) || 0;
+  const mixing = parseFloat(mixingCostField.value) || 0;
+  const bag = parseFloat(bagCostField.value) || 0;
+  const tin = parseFloat(transportInField.value) || 0;
+  const tout = parseFloat(transportOutField.value) || 0;
+  const comm = parseFloat(commissionInput.value) || 0;
+  const total = material + mixing + bag + tin + tout + comm;
+  totalCostField.value = total.toFixed(2);
+  const selling = parseFloat(sellingPriceInput.value) || 0;
+  const tonnage = parseFloat(tonnageInput.value) || 0;
+  const grossProfit = selling - total;
+  grossProfitField.value = grossProfit.toFixed(2);
+  if (tonnage > 0 && selling > 0) {
+    const margin = (grossProfit / (tonnage * selling)) * 100;
+    gpMarginField.value = margin.toFixed(2);
+  } else {
+    gpMarginField.value = "";
+  }
+}
+
+mixingLocation.addEventListener("change", function () {
+  const val = this.value;
+  let cost = 0;
+  if (["ASAHI", "NSBK", "WIV"].includes(val)) cost = 120;
+  else if (["HSK", "JENJAROM"].includes(val)) cost = 25;
+  else if (val === "ORIENTAL") cost = 150;
+  mixingCostField.value = cost.toFixed(2);
+  updateAllMaterialPrices();
+  recalculateNutrients();
+  updateTotals();
+});
+
+document.getElementById("delivery").addEventListener("change", function () {
+  const val = this.value;
+  transportOutField.value = (val === "Deld" ? "70.00" : "0.00");
+  updateTotals();
+});
+
+[sellingPriceInput, tonnageInput, commissionInput].forEach(el => {
+  el.addEventListener("input", updateTotals);
+});
+</script>
+</body>
+</html>
