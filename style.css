@@ -86,91 +86,77 @@ th, td {
     -webkit-overflow-scrolling: touch;
   }
   thead {
-    display: none;
+    display: table-header-group;
+  }
+  th {
+    font-size: 1rem;
+    font-weight: bold;
+    background-color: #f0f0f0;
+    border-bottom: 2px solid #ccc;
   }
   tr {
-    display: block;
-    margin-bottom: 3vw;
-    border-bottom: 2px solid #ccc;
-    padding-bottom: 2vw;
-    width: 100%;
+    display: table-row;
   }
   td {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    text-align: left;
-    padding: 1.5vw 1vw;
-    box-sizing: border-box;
-    width: 100%;
-    flex-wrap: wrap;
+    display: table-cell;
+    padding: 1.5vw 2vw;
+    text-align: center;
+    vertical-align: middle;
+    width: 33.33%; /* Equal distribution for three columns */
   }
   td:before {
     content: attr(data-label);
     font-weight: bold;
-    flex: 1 1 40%;
     margin-right: 1vw;
     font-size: 0.85rem;
     white-space: nowrap;
   }
-  td select, td input {
-    flex: 1 1 55%;
-    font-size: 0.85rem;
-    max-width: 100%;
-  }
-  .remove-btn {
-    width: 100%;
-    text-align: center;
-  }
-  .form-section {
-    padding: 2vw;
-  }
 
-  /* Specific styling for Nutrient Table in portrait layout */
+  /* Specific styling for Nutrient Table */
   #nutrientTable {
-    overflow-x: hidden; /* No horizontal scrolling */
+    overflow-x: hidden;
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+    min-width: 300px;
+    max-width: 400px;
   }
-  #nutrientTable tr {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 2vw;
-    padding-bottom: 0;
-    border-bottom: none;
-  }
-  #nutrientTable td {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+  #nutrientTable th {
     padding: 1.5vw;
-    width: 100%;
-    min-width: 0; /* Reset min-width */
-    border-bottom: 1px solid #ccc; /* Add bottom border to each row */
-    flex-wrap: nowrap;
   }
-  #nutrientTable td:before {
-    flex: 1 1 40%;
-    margin-right: 65vw;
-    font-size: 0.9rem;
-  }
-  #nutrientTable td:nth-child(2) { /* N */
+  #nutrientTable .nutrient-name {
+    font-weight: bold;
     background-color: lightblue;
   }
-  #nutrientTable td:nth-child(3) { /* P2O5 */
+  #nutrientTable tr:nth-child(2) .nutrient-name {
     background-color: orange;
   }
-  #nutrientTable td:nth-child(4) { /* K2O */
+  #nutrientTable tr:nth-child(3) .nutrient-name {
     background-color: teal;
   }
-  #nutrientTable td:nth-child(5) { /* MgO */
+  #nutrientTable tr:nth-child(4) .nutrient-name {
     background-color: green;
   }
-  #nutrientTable td:nth-child(6) { /* TOTAL */
+  #nutrientTable tr:nth-child(5) .nutrient-name {
     background-color: rgb(255, 255, 143);
   }
-  #nutrientTable #expectedRow.different,
-  #nutrientTable #calculatedRow.different {
+  #nutrientTable .nutrient-value {
+    display: inline-block;
+    width: 100%;
+  }
+  #nutrientTable tr.different td:nth-child(3) {
     background-color: red;
+    color: white;
+  }
+
+  /* Color Legend */
+  #nutrientTable::after {
+    content: "Legend: N (lightblue), P₂O₅ (orange), K₂O (teal), MgO (green), TOTAL (yellow)";
+    display: block;
+    font-size: 0.8rem;
+    color: #333;
+    margin-top: 1vw;
+    text-align: center;
   }
 }
 
@@ -262,9 +248,49 @@ th, td {
   padding: 2vw;
 }
 
-#nutrientTable th:nth-child(2) { background-color: lightblue; } /* N */
-#nutrientTable th:nth-child(3) { background-color: orange; } /* P2O5 */
-#nutrientTable th:nth-child(4) { background-color: teal; } /* K2O */
-#nutrientTable th:nth-child(5) { background-color: green; } /* MgO */
-#nutrientTable th:nth-child(6) { background-color: rgb(255, 255, 143); } /* TOTAL */
-#calculatedRow.different { background-color: red; }
+  /* Specific styling for Nutrient Table */
+  #nutrientTable {
+    overflow-x: hidden;
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+    min-width: 300px;
+    max-width: 400px;
+  }
+  #nutrientTable th {
+    padding: 1.5vw;
+  }
+  #nutrientTable .nutrient-name {
+    font-weight: bold;
+    background-color: lightblue;
+  }
+  #nutrientTable tr:nth-child(2) .nutrient-name {
+    background-color: orange;
+  }
+  #nutrientTable tr:nth-child(3) .nutrient-name {
+    background-color: teal;
+  }
+  #nutrientTable tr:nth-child(4) .nutrient-name {
+    background-color: green;
+  }
+  #nutrientTable tr:nth-child(5) .nutrient-name {
+    background-color: rgb(255, 255, 143);
+  }
+  #nutrientTable .nutrient-value {
+    display: inline-block;
+    width: 100%;
+  }
+  #nutrientTable tr.different td:nth-child(3) {
+    background-color: red;
+    color: white;
+  }
+
+  /* Color Legend */
+  #nutrientTable::after {
+    content: "Legend: N (lightblue), P₂O₅ (orange), K₂O (teal), MgO (green), TOTAL (yellow)";
+    display: block;
+    font-size: 0.8rem;
+    color: #333;
+    margin-top: 1vw;
+    text-align: center;
+  }
