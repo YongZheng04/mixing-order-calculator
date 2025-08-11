@@ -55,30 +55,36 @@
   <table id="nutrientTable">
     <thead>
       <tr>
-        <th></th>
-        <th>N</th>
-        <th>P2O5</th>
-        <th>K2O</th>
-        <th>MgO</th>
-        <th>TOTAL</th>
+        <th>Nutrient</th>
+        <th>Expected</th>
+        <th>Calculated</th>
       </tr>
     </thead>
     <tbody>
-      <tr id="expectedRow">
-        <td>Expected</td>
-        <td data-label="N"><span class="nutrient-label"></span> <span id="expectedN" class="nutrient-value"></span></td>
-        <td data-label="P2O5"><span class="nutrient-label"></span> <span id="expectedP2O5" class="nutrient-value"></span></td>
-        <td data-label="K2O"><span class="nutrient-label"></span> <span id="expectedK2O" class="nutrient-value"></span></td>
-        <td data-label="MgO"><span class="nutrient-label"></span> <span id="expectedMgO" class="nutrient-value"></span></td>
-        <td data-label="TOTAL"><span class="nutrient-label"></span> <span id="expectedTotal" class="nutrient-value"></span></td>
+      <tr>
+        <td data-label="" class="nutrient-name">N</td>
+        <td><span id="expectedN" class="nutrient-value"></span></td>
+        <td><span id="calculatedN" class="nutrient-value"></span></td>
       </tr>
-      <tr id="calculatedRow">
-        <td>Calculated</td>
-        <td data-label="N"><span class="nutrient-label"></span> <span id="calculatedN" class="nutrient-value"></span></td>
-        <td data-label="P2O5"><span class="nutrient-label"></span> <span id="calculatedP2O5" class="nutrient-value"></span></td>
-        <td data-label="K2O"><span class="nutrient-label"></span> <span id="calculatedK2O" class="nutrient-value"></span></td>
-        <td data-label="MgO"><span class="nutrient-label"></span> <span id="calculatedMgO" class="nutrient-value"></span></td>
-        <td data-label="TOTAL"><span class="nutrient-label"></span> <span id="calculatedTotal" class="nutrient-value"></span></td>
+      <tr>
+        <td data-label="" class="nutrient-name">P₂O₅</td>
+        <td><span id="expectedP2O5" class="nutrient-value"></span></td>
+        <td><span id="calculatedP2O5" class="nutrient-value"></span></td>
+      </tr>
+      <tr>
+        <td data-label="" class="nutrient-name">K₂O</td>
+        <td><span id="expectedK2O" class="nutrient-value"></span></td>
+        <td><span id="calculatedK2O" class="nutrient-value"></span></td>
+      </tr>
+      <tr>
+        <td data-label="" class="nutrient-name">MgO</td>
+        <td><span id="expectedMgO" class="nutrient-value"></span></td>
+        <td><span id="calculatedMgO" class="nutrient-value"></span></td>
+      </tr>
+      <tr>
+        <td data-label="" class="nutrient-name">Total</td>
+        <td><span id="expectedTotal" class="nutrient-value"></span></td>
+        <td><span id="calculatedTotal" class="nutrient-value"></span></td>
       </tr>
     </tbody>
   </table>
@@ -212,28 +218,32 @@ function recalculateNutrients() {
   });
 
   const total = calculated.N + calculated.P2O5 + calculated.K2O + calculated.MgO;
-  document.getElementById("calculatedN").innerText = calculated.N.toFixed(1);
-  document.getElementById("calculatedP2O5").innerText = calculated.P2O5.toFixed(1);
-  document.getElementById("calculatedK2O").innerText = calculated.K2O.toFixed(1);
-  document.getElementById("calculatedMgO").innerText = calculated.MgO.toFixed(1);
-  document.getElementById("calculatedTotal").innerText = total.toFixed(1);
+  const expectedValues = parseNutrientValues(itemName.value) || { N: 0, P2O5: 0, K2O: 0, MgO: 0, total: 0 };
 
-  // Highlight if different
-  const expectedN = parseFloat(document.getElementById("expectedN").innerText) || 0;
-  const expectedP2O5 = parseFloat(document.getElementById("expectedP2O5").innerText) || 0;
-  const expectedK2O = parseFloat(document.getElementById("expectedK2O").innerText) || 0;
-  const expectedMgO = parseFloat(document.getElementById("expectedMgO").innerText) || 0;
-  const calculatedRow = document.getElementById("calculatedRow");
-  if (
-    Math.abs(expectedN - calculated.N) > 0.1 ||
-    Math.abs(expectedP2O5 - calculated.P2O5) > 0.1 ||
-    Math.abs(expectedK2O - calculated.K2O) > 0.1 ||
-    Math.abs(expectedMgO - calculated.MgO) > 0.1
-  ) {
-    calculatedRow.classList.add("different");
-  } else {
-    calculatedRow.classList.remove("different");
-  }
+  // Update values
+  document.getElementById("expectedN").textContent = expectedValues.N.toFixed(1) || "0.0";
+  document.getElementById("calculatedN").textContent = calculated.N.toFixed(1);
+  document.getElementById("expectedP2O5").textContent = expectedValues.P2O5.toFixed(1) || "0.0";
+  document.getElementById("calculatedP2O5").textContent = calculated.P2O5.toFixed(1);
+  document.getElementById("expectedK2O").textContent = expectedValues.K2O.toFixed(1) || "0.0";
+  document.getElementById("calculatedK2O").textContent = calculated.K2O.toFixed(1);
+  document.getElementById("expectedMgO").textContent = expectedValues.MgO.toFixed(1) || "0.0";
+  document.getElementById("calculatedMgO").textContent = calculated.MgO.toFixed(1);
+  document.getElementById("expectedTotal").textContent = expectedValues.total.toFixed(1) || "0.0";
+  document.getElementById("calculatedTotal").textContent = total.toFixed(1);
+
+  // Check for differences and apply .different class
+  const rows = document.querySelectorAll("#nutrientTable tbody tr");
+  rows.forEach(row => {
+    const nutrient = row.querySelector(".nutrient-name").textContent;
+    const expected = parseFloat(row.querySelector("td:nth-child(2) .nutrient-value").textContent) || 0;
+    const calculated = parseFloat(row.querySelector("td:nth-child(3) .nutrient-value").textContent) || 0;
+    if (expected !== calculated) {
+      row.classList.add("different");
+    } else {
+      row.classList.remove("different");
+    }
+  });
 }
 
 // Populate itemName dropdown in alphabetical order
