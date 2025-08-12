@@ -240,7 +240,7 @@ function recalculateNutrients() {
   document.getElementById("expectedTotal").textContent = expectedValues.total.toFixed(1) || "0.0";
   document.getElementById("calculatedTotal").textContent = total.toFixed(1);
 
-  // Check for differences and apply .different class
+  // Check for differences and apply classes
   const rows = document.querySelectorAll("#nutrientTable tbody tr");
   rows.forEach(row => {
     const nutrient = row.querySelector(".nutrient-name").textContent;
@@ -250,6 +250,11 @@ function recalculateNutrients() {
       row.classList.add("different");
     } else {
       row.classList.remove("different");
+    }
+    if (calculated > expected) {
+      row.classList.add("exceeds-expected");
+    } else {
+      row.classList.remove("exceeds-expected");
     }
   });
 }
