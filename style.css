@@ -148,6 +148,10 @@ th, td {
     background-color: red;
     color: white;
   }
+  #nutrientTable tr.exceeds-expected td:nth-child(3) {
+    background-color: rgb(0, 183, 255);
+    color: black;
+  }
 
   /* Color Legend */
   #nutrientTable::after {
@@ -157,6 +161,19 @@ th, td {
     color: #333;
     margin-top: 1vw;
     text-align: center;
+  }
+
+  /* Specific styling for Materials Table */
+  #materialTable {
+    overflow-x: hidden;
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+    min-width: 300px;
+    max-width: 400px;
+  }
+  #materialTable td {
+    padding: 1.5vw 2vw;
   }
 }
 
@@ -190,6 +207,70 @@ th, td {
   }
   td:before {
     content: none;
+  }
+  
+    /* Specific styling for Nutrient Table */
+  #nutrientTable {
+    overflow-x: hidden;
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+    min-width: 300px;
+    max-width: 400px;
+  }
+  #nutrientTable th {
+    padding: 1.5vw;
+  }
+  #nutrientTable .nutrient-name {
+    font-weight: bold;
+    background-color: lightblue;
+  }
+  #nutrientTable tr:nth-child(2) .nutrient-name {
+    background-color: orange;
+  }
+  #nutrientTable tr:nth-child(3) .nutrient-name {
+    background-color: teal;
+  }
+  #nutrientTable tr:nth-child(4) .nutrient-name {
+    background-color: green;
+  }
+  #nutrientTable tr:nth-child(5) .nutrient-name {
+    background-color: rgb(255, 255, 143);
+  }
+  #nutrientTable .nutrient-value {
+    display: inline-block;
+    width: 100%;
+  }
+  #nutrientTable tr.different td:nth-child(3) {
+    background-color: red;
+    color: white;
+  }
+  #nutrientTable tr.exceeds-expected td:nth-child(3) {
+    background-color: rgb(0, 183, 255);
+    color: black;
+  }
+
+  /* Color Legend */
+  #nutrientTable::after {
+    content: "Legend: N (lightblue), P₂O₅ (orange), K₂O (teal), MgO (green), TOTAL (yellow)";
+    display: block;
+    font-size: 0.8rem;
+    color: #333;
+    margin-top: 1vw;
+    text-align: center;
+  }
+
+  /* Specific styling for Materials Table */
+  #materialTable {
+    overflow-x: hidden;
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+    min-width: 300px;
+    max-width: 400px;
+  }
+  #materialTable td {
+    padding: 1.5vw 2vw;
   }
 }
 
@@ -248,49 +329,7 @@ th, td {
   padding: 2vw;
 }
 
-  /* Specific styling for Nutrient Table */
-  #nutrientTable {
-    overflow-x: hidden;
-    margin-left: auto;
-    margin-right: auto;
-    width: 90%;
-    min-width: 300px;
-    max-width: 400px;
-  }
-  #nutrientTable th {
-    padding: 1.5vw;
-  }
-  #nutrientTable .nutrient-name {
-    font-weight: bold;
-    background-color: lightblue;
-  }
-  #nutrientTable tr:nth-child(2) .nutrient-name {
-    background-color: orange;
-  }
-  #nutrientTable tr:nth-child(3) .nutrient-name {
-    background-color: teal;
-  }
-  #nutrientTable tr:nth-child(4) .nutrient-name {
-    background-color: green;
-  }
-  #nutrientTable tr:nth-child(5) .nutrient-name {
-    background-color: rgb(255, 255, 143);
-  }
-  #nutrientTable .nutrient-value {
-    display: inline-block;
-    width: 100%;
-  }
-  #nutrientTable tr.different td:nth-child(3) {
-    background-color: red;
-    color: white;
-  }
-
-  /* Color Legend */
-  #nutrientTable::after {
-    content: "Legend: N (lightblue), P₂O₅ (orange), K₂O (teal), MgO (green), TOTAL (yellow)";
-    display: block;
-    font-size: 0.8rem;
-    color: #333;
-    margin-top: 1vw;
-    text-align: center;
-  }
+.fixed-value {
+  font-style: italic;
+  color: red;
+}
