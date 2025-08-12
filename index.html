@@ -98,7 +98,7 @@
       <tr>
         <th>Material</th>
         <th>Input Ratio (kg)</th>
-        <th>Unit Price (RM) <em style="color: red;">Fixed Value</em></td></th>
+        <th>Unit Price (RM) </th>
         <th>Total Cost (RM)</th>
         <th>Action</th>
       </tr>
@@ -321,7 +321,7 @@ function addMaterialRow(material = "", ratio = "") {
       </select>
     </td>
     <td data-label="Input Ratio (kg)"><input type="number" class="input-ratio" step="0.01" min="0" value="${ratio}" /></td>
-    <td data-label="Unit Price (RM)"><input type="number" class="unit-price" readonly /></td>
+    <td data-label="Unit Price (RM)"><input type="number" class="unit-price" step="0.01" min="0" value="0.00" /></td>
     <td data-label="Total Cost (RM)"><input type="text" class="total-cost" readonly /></td>
     <td data-label="Action"><button class="remove-btn" onclick="removeRow(this)">Remove</button></td>
   `;
@@ -348,6 +348,10 @@ function addMaterialRow(material = "", ratio = "") {
   row.querySelector(".input-ratio").addEventListener("input", () => {
     recalculateCosts();
     recalculateNutrients();
+  });
+  // Add event listener for unit price changes
+  row.querySelector(".unit-price").addEventListener("input", () => {
+    recalculateCosts();
   });
 }
 
@@ -406,10 +410,10 @@ function updateTotals() {
   totalCostField.value = total.toFixed(2);
   const selling = parseFloat(sellingPriceInput.value) || 0;
   const tonnage = parseFloat(tonnageInput.value) || 0;
-  const grossProfit = (selling - total)* tonnage;
+  const grossProfit = (selling - total) * tonnage;
   grossProfitField.value = grossProfit.toFixed(2);
   if (tonnage > 0 && selling > 0) {
-    const margin = [grossProfit / (tonnage* selling)]*100;
+    const margin = [grossProfit / (tonnage * selling)] * 100;
     gpMarginField.value = margin.toFixed(2);
   } else {
     gpMarginField.value = "";
