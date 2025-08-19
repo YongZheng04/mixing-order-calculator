@@ -15,13 +15,13 @@ document.addEventListener('DOMContentLoaded', () => {
   async function loadData() {
     try {
       // Replace these URLs with the published CSV URLs from Google Sheets
-      const nutrientNonAsahi = await loadSheet('https://docs.google.com/spreadsheets/d/e/2PACX-1vR2a_aIz6qbRz1tvdFpwJmJABRdrda7VvR3uAxdI2U7HQmYMsW9eak6n3OjF1s3hFQ3MquMYEAcAQRQ/pub?gid=0&single=true&output=csv');
-      const nutrientAsahi = await loadSheet('https://docs.google.com/spreadsheets/d/e/2PACX-1vR2a_aIz6qbRz1tvdFpwJmJABRdrda7VvR3uAxdI2U7HQmYMsW9eak6n3OjF1s3hFQ3MquMYEAcAQRQ/pub?gid=1709300494&single=true&output=csv');
-      const materialPriority = await loadSheet('https://docs.google.com/spreadsheets/d/e/2PACX-1vR2a_aIz6qbRz1tvdFpwJmJABRdrda7VvR3uAxdI2U7HQmYMsW9eak6n3OjF1s3hFQ3MquMYEAcAQRQ/pub?gid=1604551484&single=true&output=csv');
-      const materialPrices = await loadSheet('https://docs.google.com/spreadsheets/d/e/2PACX-1vR2a_aIz6qbRz1tvdFpwJmJABRdrda7VvR3uAxdI2U7HQmYMsW9eak6n3OjF1s3hFQ3MquMYEAcAQRQ/pub?gid=1516469959&single=true&output=csv');
-      const asahiPrices = await loadSheet('https://docs.google.com/spreadsheets/d/e/2PACX-1vR2a_aIz6qbRz1tvdFpwJmJABRdrda7VvR3uAxdI2U7HQmYMsW9eak6n3OjF1s3hFQ3MquMYEAcAQRQ/pub?gid=1918293291&single=true&output=csv');
-      const itemsData = await loadSheet('https://docs.google.com/spreadsheets/d/e/2PACX-1vR2a_aIz6qbRz1tvdFpwJmJABRdrda7VvR3uAxdI2U7HQmYMsW9eak6n3OjF1s3hFQ3MquMYEAcAQRQ/pub?gid=1793591807&single=true&output=csv');
-      const itemMaterials = await loadSheet('https://docs.google.com/spreadsheets/d/e/2PACX-1vR2a_aIz6qbRz1tvdFpwJmJABRdrda7VvR3uAxdI2U7HQmYMsW9eak6n3OjF1s3hFQ3MquMYEAcAQRQ/pub?gid=90869555&single=true&output=csv');
+      const nutrientNonAsahi = await loadSheet('https://docs.google.com/spreadsheets/d/e/2PACX-1vQEAqN-7MmZwiGfM9rRuU3g4IyShCgac4ABlKs2AzwtAVKdg3uAGfKIWrpiuTSvzq32hc20Bhxev7Qf/pub?gid=1413416921&single=true&output=csv');
+      const nutrientAsahi = await loadSheet('https://docs.google.com/spreadsheets/d/e/2PACX-1vQEAqN-7MmZwiGfM9rRuU3g4IyShCgac4ABlKs2AzwtAVKdg3uAGfKIWrpiuTSvzq32hc20Bhxev7Qf/pub?gid=1030741743&single=true&output=csv');
+      const materialPriority = await loadSheet('https://docs.google.com/spreadsheets/d/e/2PACX-1vQEAqN-7MmZwiGfM9rRuU3g4IyShCgac4ABlKs2AzwtAVKdg3uAGfKIWrpiuTSvzq32hc20Bhxev7Qf/pub?gid=1479052106&single=true&output=csv');
+      const materialPrices = await loadSheet('https://docs.google.com/spreadsheets/d/e/2PACX-1vQEAqN-7MmZwiGfM9rRuU3g4IyShCgac4ABlKs2AzwtAVKdg3uAGfKIWrpiuTSvzq32hc20Bhxev7Qf/pub?gid=1013343262&single=true&output=csv');
+      const asahiPrices = await loadSheet('https://docs.google.com/spreadsheets/d/e/2PACX-1vQEAqN-7MmZwiGfM9rRuU3g4IyShCgac4ABlKs2AzwtAVKdg3uAGfKIWrpiuTSvzq32hc20Bhxev7Qf/pub?gid=1857741276&single=true&output=csv');
+      const itemsData = await loadSheet('https://docs.google.com/spreadsheets/d/e/2PACX-1vQEAqN-7MmZwiGfM9rRuU3g4IyShCgac4ABlKs2AzwtAVKdg3uAGfKIWrpiuTSvzq32hc20Bhxev7Qf/pub?gid=1589158564&single=true&output=csv');
+      const itemMaterials = await loadSheet('https://docs.google.com/spreadsheets/d/e/2PACX-1vQEAqN-7MmZwiGfM9rRuU3g4IyShCgac4ABlKs2AzwtAVKdg3uAGfKIWrpiuTSvzq32hc20Bhxev7Qf/pub?gid=1311393529&single=true&output=csv');
 
       // Convert to original data.js format
       window.nutrientContributionsNonAsahi = nutrientNonAsahi.reduce((acc, row) => ({
